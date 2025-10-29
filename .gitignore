@@ -1,0 +1,43 @@
+﻿# Build output
+bin/
+obj/
+
+# User-specific (IDE metadata)
+.vscode/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+Logs/
+
+# Sensitive configs
+appsettings.json
+appsettings.*.json
+
+# Environment
+.env
+.env.*
+
+# SQLite
+*.db
+*.db-shm
+*.db-wal
+
+# Certificates
+*.pfx
+*.cer
+*.key
+
+# Secrets / Data Protection /DataProtection-Keys/
+/keys/
+
+# Docker
+docker-compose.override.yml
+*.pid
+
+# Migrations
+Migrations/
