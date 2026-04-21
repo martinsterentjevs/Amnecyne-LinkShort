@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36616.10 d17.14
+# Visual Studio Version 18
+VisualStudioVersion = 18.5.11709.299 stable
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API-Auth-Demo", "API-Auth-Demo.csproj", "{05DE5F6F-1816-4720-8315-4BF7DFA16CCF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkShort", "backend\LinkShort.csproj", "{8D3BCF4C-FAF4-1C71-CC8A-FE084CC16AFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{05DE5F6F-1816-4720-8315-4BF7DFA16CCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{05DE5F6F-1816-4720-8315-4BF7DFA16CCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{05DE5F6F-1816-4720-8315-4BF7DFA16CCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{05DE5F6F-1816-4720-8315-4BF7DFA16CCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D3BCF4C-FAF4-1C71-CC8A-FE084CC16AFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D3BCF4C-FAF4-1C71-CC8A-FE084CC16AFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D3BCF4C-FAF4-1C71-CC8A-FE084CC16AFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D3BCF4C-FAF4-1C71-CC8A-FE084CC16AFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
