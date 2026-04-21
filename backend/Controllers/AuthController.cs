@@ -1,12 +1,12 @@
-﻿using API_Auth_Demo.DTOs;
-using API_Auth_Demo.Models.enums;
-using API_Auth_Demo.Services;
+﻿using Amnecyne.LinkShort.DTOs;
+using Amnecyne.LinkShort.Models.enums;
+using Amnecyne.LinkShort.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace API_Auth_Demo.Controllers
+namespace Amnecyne.LinkShort.Controllers
 {
     [ApiController]
     [Route("[controller]")]

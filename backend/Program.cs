@@ -1,5 +1,5 @@
-using API_Auth_Demo.Data;
-using API_Auth_Demo.Services;
+using Amnecyne.LinkShort.Data;
+using Amnecyne.LinkShort.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;

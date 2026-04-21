@@ -1,4 +1,4 @@
-﻿namespace API_Auth_Demo.Models.enums
+﻿namespace Amnecyne.LinkShort.Models.enums
 {
     public enum ErrorMessages
     {

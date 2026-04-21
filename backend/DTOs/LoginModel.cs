@@ -1,4 +1,4 @@
-﻿namespace API_Auth_Demo.DTOs
+﻿namespace Amnecyne.LinkShort.DTOs
 {
     public class LoginModel
     {

@@ -1,12 +1,11 @@
-﻿using API_Auth_Demo.DTOs;
-using API_Auth_Demo.Models;
-
+﻿using Amnecyne.LinkShort.DTOs;
+using Amnecyne.LinkShort.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace API_Auth_Demo.Services
+namespace Amnecyne.LinkShort.Services
 {
     public class TokenService
     {

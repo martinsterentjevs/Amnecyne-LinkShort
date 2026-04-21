@@ -1,4 +1,4 @@
-﻿namespace API_Auth_Demo.Models
+﻿namespace Amnecyne.LinkShort.Models
 {
     public class User
     {

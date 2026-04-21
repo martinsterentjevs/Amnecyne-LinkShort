@@ -1,4 +1,4 @@
-﻿namespace API_Auth_Demo.Helpers
+﻿namespace Amnecyne.LinkShort.Helpers
 {
     public class PBKDF2
     {

@@ -1,10 +1,10 @@
-﻿using API_Auth_Demo.Models;
-using API_Auth_Demo.Models.enums;
-using API_Auth_Demo.Helpers;
-using System.Security.Cryptography;
-using API_Auth_Demo.DTOs;
+﻿using System.Security.Cryptography;
+using Amnecyne.LinkShort.Helpers;
+using Amnecyne.LinkShort.Models.enums;
+using Amnecyne.LinkShort.Models;
+using Amnecyne.LinkShort.DTOs;
 
-namespace API_Auth_Demo.Services
+namespace Amnecyne.LinkShort.Services
 {
     public class AuthService
     {

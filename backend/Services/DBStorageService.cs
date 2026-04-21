@@ -1,9 +1,9 @@
-﻿using API_Auth_Demo.Models;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
-using API_Auth_Demo.Data;
+using Amnecyne.LinkShort.Data;
+using Amnecyne.LinkShort.Models;
 
-namespace API_Auth_Demo.Services
+namespace Amnecyne.LinkShort.Services
 {
     public class DBStorageService
     {

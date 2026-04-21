@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using API_Auth_Demo.Models;
-namespace API_Auth_Demo.Data
+using Amnecyne.LinkShort.Models;
+namespace Amnecyne.LinkShort.Data
 {
     public class AppDbContext : DbContext
     {
