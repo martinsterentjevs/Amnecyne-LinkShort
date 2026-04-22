@@ -15,12 +15,13 @@ obj/
 Logs/
 
 # Sensitive configs
-appsettings.json
 appsettings.*.json
 
 # Environment
 .env
-.env.*
+.env.local
+.env.*.local
+infra/.env
 
 # SQLite
 *.db
@@ -39,5 +40,36 @@ appsettings.*.json
 docker-compose.override.yml
 *.pid
 
-# Migrations
-Migrations/
+# Vite artifacts 
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+#Test VS directories
+tests/**/bin/
+tests/**/obj/
+#Jetbrains ide directories
+.idea/
+.vs/
+**/.idea/
+**/.vs/

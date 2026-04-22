@@ -1,0 +1,17 @@
+services:
+    backend:
+        build:
+            context: ..
+            dockerfile: infra/Dockerfile
+        ports:
+        - "5000:8080"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ConnectionStrings__DefaultConnection=Data Source=/data/linkshort-dev.db
+            - Jwt__Key=LocalDevSecretKeyThatIsLongEnough123!
+            - Jwt__Issuer=linkshort-dev
+            - Jwt__Audience=linkshort-dev
+        volumes:
+            - linkshort-dev-data:/data
+volumes:
+    linkshort-dev-data:

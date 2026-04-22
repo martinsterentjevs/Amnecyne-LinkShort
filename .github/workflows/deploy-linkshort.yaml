@@ -1,0 +1,25 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run tests
+        run: dotnet test tests/Amnecyne.LinkShort.Tests/Amnecyne.LinkShort.Tests.csproj
+
+      - name: Deploy to Oracle VPS
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.ORACLE_VPS_SSH_HOST }}
+          username: ${{ secrets.ORACLE_VPS_SSH_USER }}
+          key: ${{ secrets.ORACLE_VPS_SSH_KEY }}
+          script: |
+            cd /srv/amnecyne-linkshort
+            git pull origin main
+            docker compose -f infra/docker-compose.prod.yaml up --build -d

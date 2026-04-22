@@ -1,123 +1,122 @@
-﻿using System.Security.Cryptography;
+﻿using Amnecyne.LinkShort.DTOs;
 using Amnecyne.LinkShort.Helpers;
-using Amnecyne.LinkShort.Models.enums;
 using Amnecyne.LinkShort.Models;
-using Amnecyne.LinkShort.DTOs;
+using Amnecyne.LinkShort.Models.enums;
 
-namespace Amnecyne.LinkShort.Services
+namespace Amnecyne.LinkShort.Services;
+
+public class AuthService
 {
-    public class AuthService
+    private readonly DBStorageService _dbStorageService;
+    private readonly TokenService _tokenService;
+
+    public AuthService(DBStorageService dbStorageService, TokenService tokenService)
     {
-        private readonly DBStorageService _dbStorageService;
-        private readonly TokenService _tokenService;
-        public AuthService(DBStorageService dbStorageService, TokenService tokenService)
-        {
-            _dbStorageService = dbStorageService;
-            _tokenService = tokenService;
-        }
-        public string ValidateUser(string username, string password)
-        {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-            {
-                return ErrorMessages.InvalidCredentials.ToString();
-            }
-            var user = _dbStorageService.GetUserByIdentifier(username) as User;
-            if (user == null)
-            {
-                return ErrorMessages.UserNotFound.ToString();
-            }
-            var incomingPW = PBKDF2.HashPassword(password, user.Salt, 10000, 32);
-            bool isValid = _dbStorageService.IsPasswordHashValid(user, incomingPW);
-            return isValid ? "Success" : ErrorMessages.UnknownError.ToString();
-        }
-        public TokenResponse RegisterUser(string username,string fullname, string email, string password)
-        {
-            try
-            {
-                if (IsUserDataTaken(username, email)) {return null; }
-                var salt = Convert.ToBase64String(RandomNumberGenerator.GetBytes(16));
-                var passwordHash = PBKDF2.HashPassword(password, salt, 10000, 32);
-                var newUser = new User
-                {
-                    Username = username,
-                    Full_Name = fullname,
-                    Email = email,
-                    PasswordHash = passwordHash,
-                    Salt = salt
-                };
-                _dbStorageService.AddUser(newUser);
-                var tokens = _tokenService.GenerateTokens(newUser);
-                return tokens;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
+        _dbStorageService = dbStorageService;
+        _tokenService = tokenService;
+    }
 
-        private bool IsUserDataTaken(string username, string email)
-        {
-            if (_dbStorageService.IsUsernameTaken(username))
-            {
-                return true;
-            }
-            if (_dbStorageService.IsEmailTaken(email))
-            {
-                return true;
-            }
-            return false;
-        }
+    public async Task<string> ValidateUserAsync(string username, string password)
+    {
+        if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            return ErrorMessages.InvalidCredentials.ToString();
+        var user = await _dbStorageService.GetUserByIdentifierAsync(username);
+        if (user == null) return ErrorMessages.UserNotFound.ToString();
+        var isValid = PBKDF2.VerifyPassword(password, user.Salt, user.PasswordHash);
+        return isValid ? "Success" : ErrorMessages.UnknownError.ToString();
+    }
 
-        public TokenResponse LoginUser(string username, string pw)
+    public async Task<TokenResponse?> RegisterUserAsync(string username, string fullname, string email, string password)
+    {
+        try
         {
-            var validationResponse = ValidateUser(username, pw);
-            if (validationResponse == "Success")
+            if (await IsUserDataTakenAsync(username, email)) return null;
+            var salt = PBKDF2.GenerateSalt();
+            var passwordHash = PBKDF2.HashPassword(password, salt);
+            var newUser = new User
             {
-                var user = _dbStorageService.GetUserByIdentifier(username) as User;
-                
-                return _tokenService.GenerateTokens(user);
-            }
-            else
+                Username = username,
+                Full_Name = fullname,
+                Email = email,
+                PasswordHash = passwordHash,
+                Salt = salt
+            };
+            await _dbStorageService.AddUserAsync(newUser);
+            var tokens = _tokenService.GenerateTokens(newUser);
+            await _dbStorageService.SaveRefreshTokenAsync(newUser, new RefreshTokens
             {
-                return null;
-            }
-        }
-
-        public TokenResponse RefreshTokens(string refreshToken)
-        {
-            var user = _dbStorageService.GetUserByRefToken(refreshToken);
-            if (user == null || user.refreshToken == null)
-                return null;
-
-            if (user.refreshToken.Expires < DateTime.UtcNow || user.refreshToken.IsRevoked)
-                return null;
-            var oldRef = user.refreshToken;
-            _dbStorageService.MarkRefTokenInvalid(oldRef);
-            var newTokens = _tokenService.GenerateTokens(user);
-            var newRef = new RefreshTokens
-            {
-                UserId = user.Id.ToString(),
-                Token = newTokens.RefreshToken,
+                UserId = newUser.Id.ToString(),
+                Token = tokens.RefreshToken,
                 Expires = DateTime.UtcNow.AddDays(7),
                 IsRevoked = false
-            };
-            _dbStorageService.SaveRefreshToken(user, newRef);
-            return newTokens;
-
+            });
+            return tokens;
         }
-        public void LogoutUser(string user)
+        catch (Exception)
         {
-            var userObj = _dbStorageService.GetUserByIdentifier(user) as User;
-            if (userObj != null)
-            {
-                var refToken = userObj.refreshToken;
-                if (refToken != null)
-                {
-                    _dbStorageService.MarkRefTokenInvalid(refToken);
-                }
-                userObj.refreshToken = null;
-                _dbStorageService.UpdateUser(userObj);
-            }
+            return null;
         }
-    } 
+    }
+
+    private async Task<bool> IsUserDataTakenAsync(string username, string email)
+    {
+        if (await _dbStorageService.IsUsernameTakenAsync(username)) return true;
+        if (await _dbStorageService.IsEmailTakenAsync(email)) return true;
+        return false;
+    }
+
+    public async Task<TokenResponse?> LoginUserAsync(string username, string pw)
+    {
+        var validationResponse = await ValidateUserAsync(username, pw);
+        if (validationResponse == "Success")
+        {
+            var user = await _dbStorageService.GetUserByIdentifierAsync(username);
+            var tokens = _tokenService.GenerateTokens(user);
+            await _dbStorageService.SaveRefreshTokenAsync(user, new RefreshTokens
+            {
+                UserId = user.Id.ToString(),
+                Token = tokens.RefreshToken,
+                Expires = DateTime.UtcNow.AddDays(7),
+                IsRevoked = false
+            });
+
+            return tokens;
+        }
+
+        return null;
+    }
+
+    public async Task<TokenResponse?> RefreshTokensAsync(string refreshToken)
+    {
+        var user = await _dbStorageService.GetUserByRefTokenAsync(refreshToken);
+        if (user == null || user.refreshToken == null)
+            return null;
+
+        if (user.refreshToken.Expires < DateTime.UtcNow || user.refreshToken.IsRevoked)
+            return null;
+        var oldRef = user.refreshToken;
+        await _dbStorageService.MarkRefTokenInvalidAsync(oldRef);
+        var newTokens = _tokenService.GenerateTokens(user);
+        var newRef = new RefreshTokens
+        {
+            UserId = user.Id.ToString(),
+            Token = newTokens.RefreshToken,
+            Expires = DateTime.UtcNow.AddDays(7),
+            IsRevoked = false
+        };
+        await _dbStorageService.SaveRefreshTokenAsync(user, newRef);
+        return newTokens;
+    }
+
+    public async Task LogoutUserAsync(string user)
+    {
+        var userObj = await _dbStorageService.GetUserByIdentifierAsync(user);
+        if (userObj != null)
+        {
+            var refToken = userObj.refreshToken;
+            if (refToken != null) await _dbStorageService.MarkRefTokenInvalidAsync(refToken);
+            userObj.refreshToken = null;
+            await _dbStorageService.UpdateUserAsync(userObj);
+        }
+    }
 }
