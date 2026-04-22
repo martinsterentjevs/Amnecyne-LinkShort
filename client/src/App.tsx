@@ -105,7 +105,6 @@ function App() {
             <DeleteModal
                 open={linkToDelete !== null}
                 link={linkToDelete}
-                onError={openError}
                 onClose={handleDeleteClose}
                 onConfirm={handleDeleteConfirm}
             />

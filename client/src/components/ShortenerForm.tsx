@@ -10,11 +10,6 @@ interface ShortLink {
     shortUrl: string;
     redirectUrl: string;
 }
-
-interface ResolveResponse {
-    redirectUrl: string;
-}
-
 interface ShortenerFormProps {
     onError: (msg: string) => void;
 }
