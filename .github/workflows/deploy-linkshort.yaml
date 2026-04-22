@@ -17,7 +17,7 @@ jobs:
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.ORACLE_VPS_SSH_HOST }}
-          username: ${{ secrets.ORACLE_VPS_SSH_USER }}
+          username: ${{ secrets.ORACLE_VPS_SSH_USERNAME }}
           key: ${{ secrets.ORACLE_VPS_SSH_KEY }}
           script: |
             cd /srv/amnecyne-linkshort

@@ -128,7 +128,7 @@ Cloudflare origin certificates are expected at `/etc/ssl/cloudflare/` on the hos
 | Secret | Description |
 |---|---|
 | `ORACLE_VPS_SSH_HOST` | VPS IP address |
-| `ORACLE_VPS_SSH_USER` | SSH username |
+| `ORACLE_VPS_SSH_USERNAME` | SSH username |
 | `ORACLE_VPS_SSH_KEY` | Private SSH key |
 
 ---
