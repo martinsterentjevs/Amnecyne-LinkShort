@@ -32,7 +32,7 @@ services:
 
   frontend:
     build:
-      context: ../client
+      context: ..
       dockerfile: ../infra/Dockerfile.client
     restart: unless-stopped
     networks:
